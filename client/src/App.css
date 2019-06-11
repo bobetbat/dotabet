@@ -1,0 +1,29 @@
+.inputForm{
+    display: flex;
+    flex-direction: column
+}
+label {
+    margin-bottom: 0 !important
+}
+.button {
+    margin-top: 1rem
+}
+.cont-row{
+    display: flex;
+    flex-direction: row;
+}
+.all-challeges{
+    display: flex;
+    justify-content: space-between;
+}
+.label{
+    display: flex;
+    justify-content: space-between;
+}
+.MuiIconButton-root{
+    padding: 0!important;
+}
+.row-like{
+    display: flex;
+    flex-direction: row;
+}
