@@ -35,6 +35,11 @@ class AppNavbar extends Component {
                                         wtf
                                     </NavLink>
                                 </NavItem>
+                                <NavItem>
+                                    <NavLink href="/">
+                                        wws
+                                    </NavLink>
+                                </NavItem>
                             </Nav>
                         </Collapse>
                     </Container>

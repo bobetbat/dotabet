@@ -20,7 +20,7 @@ import { getChallenges, deleteChallenge } from '../actions/challengeActions';
 
 
 
-class UserDataInput extends React.Component {
+class Tables extends React.Component {
 
     
   componentDidMount(){
@@ -87,13 +87,13 @@ class UserDataInput extends React.Component {
   }
 }
 
-UserDataInput.propTypes = {
+Tables.propTypes = {
   getChallenges: PropTypes.func.isRequired,
-  challange: PropTypes.object.isRequired
+  challenge: PropTypes.object.isRequired
 }
 
 const mapStateToProp = (state) => ({
   challenge: state.challenge
 })
 
-export default connect(mapStateToProp, { getChallenges, deleteChallenge })(UserDataInput);
+export default connect(mapStateToProp, { getChallenges, deleteChallenge })(Tables);

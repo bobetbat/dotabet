@@ -4,11 +4,13 @@ import { Container } from 'reactstrap';
 
 import store from './store';
 import AppNavbar from './components/AppNavbar';
-import UserDataInput from './components/Table';
+import Tables from './components/Tables';
 import ChallengeModal from './components/ChallengeModal';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
+import AppFooter from './components/AppFooter';
+
 
 class App extends Component {
   render() {
@@ -16,11 +18,14 @@ class App extends Component {
       <Provider store = {store}>
         <div className="App">
           <AppNavbar />
-          <ChallengeModal />
-          <Container className='row-like'>
-              <UserDataInput />
-              <UserDataInput />
+          <Container className="main-container">
+            <ChallengeModal />
+            <Container className='row-like'>
+                <Tables />
+                <Tables />
+            </Container>
           </Container>
+          <AppFooter />
         </div>
       </Provider>
     );

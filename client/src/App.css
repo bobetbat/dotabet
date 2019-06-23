@@ -27,3 +27,11 @@ label {
     display: flex;
     flex-direction: row;
 }
+
+.footer{
+    height: 8rem;
+    background-color: #343a40;
+}
+.main-container{
+    min-height: 100vh;
+}

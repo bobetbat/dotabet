@@ -3,7 +3,7 @@ const router = express.Router();
 
 
 const Challenge = require('../../models/Challenge');
-const matched = require('../../models/MatchedChallenge');
+const MatchedChallenge = require('../../models/MatchedChallenge');
 
 
 //@route   GET /challenges
@@ -17,18 +17,72 @@ router.get('/', async (req,res) => {
 //@route   POST /challenges
 //@desc    Create Challenge
 //@access  Pubic
-router.post('/', (req,res) => {
-    const newChallenge = new Challenge({
-        steamId: req.body.steamId,
-        opponentId: req.body.opponentId,
-        amount: req.body.amount
-    });
-    //const found = Challenge.some(challenge => (challenge.steamId === newChallenge.steamId && challenge.opponentId === newChallenge.opponentId));   
-
+router.post('/', async (req,res) => {
+    
     //Check for data entering
-    if (!newChallenge.steamId || !newChallenge.opponentId || !newChallenge.amount){
+    if (!req.body.steamId || !req.body.opponentId || !req.body.amount){
         return res.status(400).json({msg: 'enter data'});
     }
+
+    //Existance check
+    const exist = await Challenge.findOne(
+        { steamId: req.body.steamId },
+        { opponentId: req.body.opponentId },
+        { amount: req.body.amount }
+    )
+
+    if (exist != null){
+        return res.status(400).json({msg: ' fight exists'});
+    }
+
+    //Selffighter
+    if (req.body.steamId == req.body.opponentId){
+        return res.status(400).json({msg: 'cant fight yourself'});
+    }
+
+    //matched challenge
+    const matchedOne = await Challenge.findOne(
+        { steamId: req.body.opponentId },
+        { opponentId: req.body.steamId },
+        { amount: req.body.amount }
+    )
+    
+    if(matchedOne == null){
+        const newChallenge = new Challenge({
+            steamId: req.body.steamId,
+            opponentId: req.body.opponentId,
+            amount: req.body.amount
+        });
+
+        newChallenge
+            .save()
+            .then(challenge => res.json(challenge))
+        
+    }else{
+        try {
+            await matchedOne.remove()
+            const newMatchedChallenge = new MatchedChallenge({
+                matchedIds: {
+                    id1: req.body.opponentId,
+                    id2: req.body.steamId
+                },
+                amount: req.body.amount
+            });
+
+            newMatchedChallenge
+                .save()
+                .then(matched => res.json(matched))
+
+        } catch (e) {
+            res.status(404).json({
+                success: false,
+                error: e.message
+            })
+        }
+
+    }
+
+    
 
     //If (check id in steam API)
 
@@ -39,19 +93,23 @@ router.post('/', (req,res) => {
     //     return res.status(400).json({msg: 'exists already'});
     // }
 
-    newChallenge
-        .save()
-        .then(challenge => res.json(challenge))
 });
 
 //@route DELETE /challenges/:id
 //@desc Delete A Challenge
 //@access Public
 
-router.delete('/:id', (req, res) => {
-    Challenge.findById(req.params.id)
-        .then(challenge => challenge.remove().then(() => res.json({ success: true})))
-        .catch(err => res.status(404).json({ success: false}));
+router.delete('/:id', async (req, res) => {
+    try {
+        const challenge = await Challenge.findById(req.params.id)
+        await challenge.remove()
+        res.json({ success: true })
+    } catch (e) {
+        res.status(404).json({
+            success: false,
+            error: e.message
+        })
+    }
 });
 
 // router.get('/matched', (req,res) => {

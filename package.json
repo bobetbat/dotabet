@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client-install": "npm installl --prefix client",
+    "client-install": "npm install --prefix client",
     "start": "node index",
     "devback": "nodemon index",
     "client": "npm start --prefix client",

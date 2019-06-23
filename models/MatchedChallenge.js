@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const MatchedChallengeSchema = new Schema({
     matchedIds: {
-        type: Array,
+        type: Object,
         required: true
     },
     amount: {

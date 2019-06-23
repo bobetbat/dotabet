@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import  { connect } from 'react-redux';
 import { Container } from 'reactstrap';
+
 import { addChallenge} from '../actions/challengeActions';
+import isInstalled from './metamask/isInstalled';
+import isLocked from './metamask/isLocked';
 
 class ChallengeModal extends Component {
     constructor () {
@@ -27,6 +30,7 @@ class ChallengeModal extends Component {
         this.props.addChallenge(newChallenge);
         // alert('A name was submitted: ' + this.state.steam_id + this.state.opponent_id + this.state.amount);
         // event.preventDefault();
+        
     }
 
     handleChange(type) {
