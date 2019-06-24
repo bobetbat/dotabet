@@ -25,14 +25,16 @@ router.post('/', async (req,res) => {
     }
 
     //Existance check
-    const exist = await Challenge.findOne(
-        { steamId: req.body.steamId },
-        { opponentId: req.body.opponentId },
-        { amount: req.body.amount }
-    )
+    const exist = await Challenge.findOne({
+        $and : [
+            { steamId: req.body.steamId },
+            { opponentId: req.body.opponentId },
+            { amount: req.body.amount }
+        ]
+    })
 
     if (exist != null){
-        return res.status(400).json({msg: ' fight exists'});
+        return res.status(400).json({msg: 'exists already' });
     }
 
     //Selffighter
@@ -41,11 +43,13 @@ router.post('/', async (req,res) => {
     }
 
     //matched challenge
-    const matchedOne = await Challenge.findOne(
-        { steamId: req.body.opponentId },
-        { opponentId: req.body.steamId },
-        { amount: req.body.amount }
-    )
+    const matchedOne = await Challenge.findOne({
+        $and : [
+            { steamId: req.body.opponentId },
+            { opponentId: req.body.steamId },
+            { amount: req.body.amount }
+        ]
+    })
     
     if(matchedOne == null){
         const newChallenge = new Challenge({
